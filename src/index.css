@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .ql-align-center {
+    text-align: center !important;
+  }
+  .ql-align-right {
+    text-align: right !important;
+  }
+  .ql-align-justify {
+    text-align: justify !important;
+  }
+  .ql-editor {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .ql-editor p {
+    margin-bottom: 1.25em;
+  }
+  .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+  }
+  .ql-container {
+    font-family: inherit !important;
+    font-size: 1rem !important;
+  }
+  .ql-toolbar {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    background-color: #f8fafc;
+    border-color: #e2e8f0 !important;
+  }
+  .ql-container.ql-snow {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    border-color: #e2e8f0 !important;
+  }
+}
