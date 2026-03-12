@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Edit3, Save, Image as ImageIcon } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function AdminMateri() {
   const { state, updateLanding, updateSession } = useAppContext();
@@ -132,7 +132,7 @@ export default function AdminMateri() {
         <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4">
           {!editingSessionId ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.values(state.sessions).map((session: any) => (
+              {Object.values(state.sessions || {}).filter((s: any) => s && s.id).map((session: any) => (
                 <div key={session.id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <span className="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full">SESI {session.id}</span>

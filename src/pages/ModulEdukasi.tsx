@@ -4,7 +4,7 @@ import { useAppContext } from '../context/AppContext';
 
 export default function ModulEdukasi() {
   const { state } = useAppContext();
-  const sessions = Object.values(state.sessions);
+  const sessions = Object.values(state.sessions || {}).filter((s: any) => s && s.id);
 
   // Map icons and colors based on ID for visual consistency
   const getVisuals = (id: string) => {

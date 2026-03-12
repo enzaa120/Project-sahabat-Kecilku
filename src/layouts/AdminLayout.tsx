@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { Baby, LayoutDashboard, BookOpen, UploadCloud, Video, LogOut, Search, Bell } from 'lucide-react';
+import { Baby, LayoutDashboard, BookOpen, UploadCloud, Video, LogOut, Search, Bell, ExternalLink } from 'lucide-react';
 
 export default function AdminLayout() {
   const location = useLocation();
@@ -61,6 +61,10 @@ export default function AdminLayout() {
             </div>
           </div>
           <div className="flex items-center gap-6">
+            <Link to="/" target="_blank" className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-bold text-sm transition-colors">
+              <ExternalLink size={16} />
+              Lihat Website
+            </Link>
             <button className="relative text-slate-500 hover:text-blue-500 transition-colors">
               <Bell size={20} />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">3</span>
@@ -70,9 +74,6 @@ export default function AdminLayout() {
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-semibold">Admin Sahabat</p>
                 <p className="text-xs text-slate-500">Super Admin</p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-blue-500/20">
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop" alt="Admin avatar" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>

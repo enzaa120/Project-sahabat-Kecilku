@@ -2,7 +2,7 @@ import { ArrowLeft, Share2, ThumbsUp } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useEffect } from 'react';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function DetailSesi() {
   const { id } = useParams();
@@ -14,9 +14,50 @@ export default function DetailSesi() {
     }
   }, [id]);
   
-  const data = state.sessions[id || '1'] || state.sessions['1'];
+  // Find the session data safely
+  let data = state.sessions[id || '1'];
+  if (!data) {
+    // Fallback to first available session if the requested one doesn't exist
+    const availableSessions = Object.values(state.sessions || {}).filter((s: any) => s && s.id);
+    data = availableSessions.length > 0 ? availableSessions[0] as any : null;
+  }
+
+  if (!data) {
+    return (
+      <div className="flex flex-col w-full min-h-screen bg-white items-center justify-center">
+        <h2 className="text-2xl font-bold text-slate-800 mb-4">Materi tidak ditemukan</h2>
+        <Link to="/materi" className="px-6 py-3 bg-blue-500 text-white rounded-xl font-bold hover:bg-blue-600 transition-colors">
+          Kembali ke Daftar Materi
+        </Link>
+      </div>
+    );
+  }
+
   const nextSessionId = String(Number(data.id) + 1);
   const nextSession = state.sessions[nextSessionId];
+
+  let displayContent = data.content || '';
+  
+  // Basic markdown to HTML conversion for legacy content
+  if (!displayContent.includes('<p>') && !displayContent.includes('<h1>')) {
+    // Convert markdown images
+    displayContent = displayContent.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" referrerpolicy="no-referrer" class="w-full rounded-2xl shadow-md object-cover my-6" />');
+    // Convert bold
+    displayContent = displayContent.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    // Convert headings
+    displayContent = displayContent.replace(/^### (.*$)/gim, '<h3 class="font-bold text-xl mt-6 mb-3">$1</h3>');
+    displayContent = displayContent.replace(/^## (.*$)/gim, '<h2 class="font-bold text-2xl mt-8 mb-4">$1</h2>');
+    displayContent = displayContent.replace(/^# (.*$)/gim, '<h1 class="font-bold text-3xl mt-8 mb-4">$1</h1>');
+    // Convert lists
+    displayContent = displayContent.replace(/^\- (.*$)/gim, '<li class="ml-4 list-disc">$1</li>');
+    // Convert newlines to breaks
+    displayContent = displayContent.replace(/\n/g, '<br />');
+  } else {
+    // It's HTML from Quill, just ensure images have referrer policy
+    displayContent = displayContent.replace(/<img /g, '<img referrerpolicy="no-referrer" ');
+    // Also convert any lingering markdown images just in case they typed it in Quill
+    displayContent = displayContent.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" referrerpolicy="no-referrer" class="w-full rounded-2xl shadow-md object-cover my-6" />');
+  }
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-white">
@@ -47,7 +88,7 @@ export default function DetailSesi() {
             <div 
               className="text-slate-800 leading-relaxed tracking-wide ql-editor"
               style={{ padding: 0 }}
-              dangerouslySetInnerHTML={{ __html: data.content.replace(/<img /g, '<img referrerpolicy="no-referrer" ') }}
+              dangerouslySetInnerHTML={{ __html: displayContent }}
             />
 
             {/* Admin Managed Media */}
