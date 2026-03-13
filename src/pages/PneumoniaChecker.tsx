@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { AlertCircle, ArrowRight, CheckCircle2, Info, Stethoscope, Timer, UploadCloud, X, ArrowLeft } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import { AlertCircle, ArrowRight, CheckCircle2, Info, Stethoscope, Timer, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
@@ -21,46 +20,88 @@ export default function PneumoniaChecker() {
 
   const handleCheck = async () => {
     setLoading(true);
-    try {
-      const ai = new GoogleGenAI({ apiKey: (import.meta as any).env?.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY });
-      const prompt = `
-        Saya adalah orang tua yang sedang memeriksa kondisi balita saya.
-        Umur anak: ${age} bulan.
-        Frekuensi napas: ${breaths} kali per menit.
-        Gejala lain yang dialami: ${symptoms.length > 0 ? symptoms.join(', ') : 'Tidak ada'}.
-        
-        Berdasarkan pedoman MTBS (Manajemen Terpadu Balita Sakit) dari WHO/Kemenkes RI:
-        1. Apakah napas anak ini tergolong cepat untuk usianya? (Batas napas cepat: <2 bulan: >=60x/menit, 2-11 bulan: >=50x/menit, 1-5 tahun: >=40x/menit).
-        2. Apakah gejala ini mengarah pada pneumonia, pneumonia berat, atau batuk bukan pneumonia?
-        3. Apa tindakan yang harus saya lakukan sekarang?
-        
-        Berikan jawaban dalam format JSON dengan struktur:
-        {
-          "status": "Aman" | "Waspada" | "Bahaya",
-          "diagnosis": "Deskripsi singkat diagnosis",
-          "isNapasCepat": boolean,
-          "recommendation": ["Langkah 1", "Langkah 2"]
-        }
-      `;
+    
+    // Simulasi loading agar terasa seperti sedang memproses data
+    setTimeout(() => {
+      try {
+        const ageNum = parseInt(age);
+        const breathsNum = parseInt(breaths);
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
+        // 1. Cek Napas Cepat berdasarkan pedoman MTBS WHO/Kemenkes
+        let isNapasCepat = false;
+        if (ageNum < 2 && breathsNum >= 60) {
+          isNapasCepat = true;
+        } else if (ageNum >= 2 && ageNum < 12 && breathsNum >= 50) {
+          isNapasCepat = true;
+        } else if (ageNum >= 12 && ageNum <= 60 && breathsNum >= 40) {
+          isNapasCepat = true;
+        } else if (ageNum > 60 && breathsNum >= 30) {
+          isNapasCepat = true; // Fallback untuk anak di atas 5 tahun
         }
-      });
 
-      const data = JSON.parse(response.text || '{}');
-      setResult(data);
-      setStep(4);
-      trackCheckerUse();
-    } catch (error) {
-      console.error("Error checking:", error);
-      alert("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.");
-    } finally {
-      setLoading(false);
-    }
+        // 2. Cek Tanda Bahaya Umum
+        const dangerSymptoms = [
+          'Tarikan dinding dada ke dalam', 
+          'Napas berbunyi (mengi/stridor)', 
+          'Tidak mau menyusu/minum', 
+          'Tampak biru pada bibir/lidah',
+          'Kejang',
+          'Gelisah atau letargi'
+        ];
+        
+        const hasDangerSigns = symptoms.some(s => dangerSymptoms.includes(s));
+
+        // 3. Tentukan Status, Diagnosis, dan Rekomendasi
+        let status = "Aman";
+        let diagnosis = "";
+        let recommendation: string[] = [];
+
+        if (hasDangerSigns) {
+          status = "Bahaya";
+          diagnosis = "Terdapat tanda bahaya umum atau tarikan dinding dada ke dalam yang mengindikasikan PNEUMONIA BERAT.";
+          recommendation = [
+            "SEGERA bawa anak ke Rumah Sakit atau IGD terdekat!",
+            "Jaga anak tetap hangat selama perjalanan.",
+            "Jika anak masih bisa menyusu/minum, terus berikan sedikit-sedikit tapi sering untuk mencegah dehidrasi.",
+            "Jangan berikan obat apa pun tanpa instruksi dokter."
+          ];
+        } else if (isNapasCepat) {
+          status = "Waspada";
+          diagnosis = "Napas anak tergolong cepat untuk usianya, yang mengindikasikan PNEUMONIA.";
+          recommendation = [
+            "Bawa anak ke Puskesmas atau dokter anak hari ini juga untuk mendapatkan antibiotik yang tepat.",
+            "Tetap berikan ASI atau cairan yang cukup agar anak tidak dehidrasi.",
+            "Redakan demam (jika ada) dengan paracetamol sesuai dosis anjuran.",
+            "Terus amati napas anak. Jika muncul tarikan dinding dada ke dalam, segera bawa ke IGD."
+          ];
+        } else {
+          status = "Aman";
+          diagnosis = "Napas anak normal dan tidak ada tanda bahaya. Kemungkinan besar BATUK BUKAN PNEUMONIA.";
+          recommendation = [
+            "Rawat anak di rumah. Berikan ASI atau cairan lebih banyak dari biasanya.",
+            "Jika anak batuk, berikan pelega tenggorokan yang aman (seperti air hangat atau madu untuk anak di atas 1 tahun).",
+            "Pastikan anak mendapat istirahat yang cukup dan pantau suhu tubuhnya.",
+            "Amati anak. Jika napas menjadi cepat atau anak sulit bernapas, segera bawa ke fasilitas kesehatan."
+          ];
+        }
+
+        const data = {
+          status,
+          diagnosis,
+          isNapasCepat,
+          recommendation
+        };
+
+        setResult(data);
+        setStep(4);
+        trackCheckerUse();
+      } catch (error) {
+        console.error("Error checking:", error);
+        alert("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.");
+      } finally {
+        setLoading(false);
+      }
+    }, 1500); // Delay 1.5 detik
   };
 
   return (

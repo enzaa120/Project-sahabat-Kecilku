@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Baby, Bell, User, Settings, LogOut, FileText } from 'lucide-react';
+import { Baby } from 'lucide-react';
 
 export default function Navbar() {
   const location = useLocation();

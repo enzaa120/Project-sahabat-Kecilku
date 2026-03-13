@@ -1,4 +1,4 @@
-import { Info, Bug, AlertTriangle, PlusSquare, Brain, MessageSquare, HelpCircle, ArrowRight } from 'lucide-react';
+import { Info, Bug, AlertTriangle, PlusSquare, Brain, HelpCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
