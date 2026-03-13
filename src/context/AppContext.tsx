@@ -313,6 +313,7 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Login failed:", error);
+      throw error;
     }
   };
 

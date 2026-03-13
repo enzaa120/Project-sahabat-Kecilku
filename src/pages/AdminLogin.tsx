@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, ArrowRight, LogIn } from 'lucide-react';
+import { Shield, ArrowRight, LogIn, Loader2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 export default function AdminLogin() {
   const { login, user, isAdmin } = useAppContext();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user && isAdmin) {
@@ -15,7 +17,22 @@ export default function AdminLogin() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login();
+    setIsLoading(true);
+    setError(null);
+    try {
+      await login();
+    } catch (err: any) {
+      console.error(err);
+      if (err.code === 'auth/popup-blocked') {
+        setError('Popup diblokir oleh browser. Izinkan popup untuk login.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError('Domain ini belum diizinkan di Firebase Console. Tambahkan URL ini ke Authorized Domains.');
+      } else {
+        setError(err.message || 'Terjadi kesalahan saat login.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -30,11 +47,21 @@ export default function AdminLogin() {
         </div>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          <button type="submit" className="w-full bg-blue-500 text-white font-bold py-3.5 rounded-xl hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 mt-2">
-            <LogIn size={20} /> Login dengan Google
+          <button 
+            type="submit" 
+            disabled={isLoading}
+            className="w-full bg-blue-500 text-white font-bold py-3.5 rounded-xl hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 mt-2 disabled:opacity-70"
+          >
+            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <LogIn size={20} />} 
+            {isLoading ? 'Memproses...' : 'Login dengan Google'}
           </button>
+          {error && (
+            <div className="p-3 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 text-center">
+              {error}
+            </div>
+          )}
           {user && !isAdmin && (
-            <p className="text-red-500 text-sm mt-2 text-center">Akun Anda tidak memiliki akses admin.</p>
+            <p className="text-red-500 text-sm mt-2 text-center">Akun Anda ({user.email}) tidak memiliki akses admin.</p>
           )}
         </form>
       </div>
