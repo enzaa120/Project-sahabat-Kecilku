@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { UploadCloud, Image as ImageIcon, Video, Trash2, Copy, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 

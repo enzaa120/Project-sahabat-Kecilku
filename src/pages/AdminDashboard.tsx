@@ -19,7 +19,7 @@ export default function AdminDashboard() {
       id,
       title: state.sessions[id]?.title || `Sesi ${id}`,
       category: state.sessions[id]?.category || 'Materi',
-      views
+      views: Number(views)
     }))
     .sort((a, b) => b.views - a.views)
     .slice(0, 4);

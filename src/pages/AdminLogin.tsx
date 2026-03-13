@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, ArrowRight, Lock } from 'lucide-react';
+import { Shield, ArrowRight, LogIn } from 'lucide-react';
+import { useAppContext } from '../context/AppContext';
 
 export default function AdminLogin() {
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { login, user, isAdmin } = useAppContext();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'admin123') {
-      localStorage.setItem('sahabat_admin_auth', 'true');
+  useEffect(() => {
+    if (user && isAdmin) {
       navigate('/admin');
-    } else {
-      setError('Password salah. Silakan coba lagi.');
     }
+  }, [user, isAdmin, navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await login();
   };
 
   return (
@@ -25,29 +26,16 @@ export default function AdminLogin() {
             <Shield size={32} />
           </div>
           <h1 className="text-2xl font-bold text-slate-900">Login Admin</h1>
-          <p className="text-slate-500 text-sm mt-2">Masukkan password untuk mengakses panel kontrol.</p>
+          <p className="text-slate-500 text-sm mt-2">Gunakan akun Google Anda untuk mengakses panel kontrol.</p>
         </div>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Masukkan password..." 
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                required
-              />
-            </div>
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          </div>
-
           <button type="submit" className="w-full bg-blue-500 text-white font-bold py-3.5 rounded-xl hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 mt-2">
-            Masuk <ArrowRight size={20} />
+            <LogIn size={20} /> Login dengan Google
           </button>
+          {user && !isAdmin && (
+            <p className="text-red-500 text-sm mt-2 text-center">Akun Anda tidak memiliki akses admin.</p>
+          )}
         </form>
       </div>
     </div>

@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { db, auth } from '../firebase';
+import { doc, collection, onSnapshot, setDoc, updateDoc, getDoc, getDocs, writeBatch } from 'firebase/firestore';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User } from 'firebase/auth';
 
 export interface SessionData {
   id: string;
@@ -175,6 +178,10 @@ const defaultState: AppState = {
 
 interface AppContextType {
   state: AppState;
+  user: User | null;
+  isAdmin: boolean;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
   updateLanding: (data: Partial<LandingData>) => void;
   updateSession: (id: string, data: Partial<SessionData>) => void;
   updateVideos: (videos: VideoData[]) => void;
@@ -190,55 +197,194 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-  const [state, setState] = useState<AppState>(() => {
-    const saved = localStorage.getItem('sahabat_sikecil_data');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return {
-          landing: { ...defaultState.landing, ...parsed.landing },
-          sessions: { ...defaultState.sessions, ...parsed.sessions },
-          analytics: { ...defaultState.analytics, ...(parsed.analytics || {}) },
-          videos: parsed.videos || defaultState.videos,
-          mediaLibrary: parsed.mediaLibrary || defaultState.mediaLibrary
-        };
-      } catch (e) {
-        return defaultState;
+  const [state, setState] = useState<AppState>(defaultState);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isFirebaseInitialized, setIsFirebaseInitialized] = useState(false);
+
+  // Seed database if empty
+  const seedDatabase = async () => {
+    try {
+      const landingDoc = await getDoc(doc(db, 'appData', 'landing'));
+      if (!landingDoc.exists()) {
+        await setDoc(doc(db, 'appData', 'landing'), defaultState.landing);
       }
+
+      const sessionsSnapshot = await getDocs(collection(db, 'sessions'));
+      if (sessionsSnapshot.empty) {
+        const batch = writeBatch(db);
+        Object.values(defaultState.sessions).forEach(session => {
+          batch.set(doc(db, 'sessions', session.id), session);
+        });
+        await batch.commit();
+      }
+
+      const videosSnapshot = await getDocs(collection(db, 'videos'));
+      if (videosSnapshot.empty) {
+        const batch = writeBatch(db);
+        defaultState.videos.forEach(video => {
+          batch.set(doc(db, 'videos', video.id), video);
+        });
+        await batch.commit();
+      }
+    } catch (error) {
+      console.error("Error seeding database:", error);
     }
-    return defaultState;
-  });
+  };
 
   useEffect(() => {
-    localStorage.setItem('sahabat_sikecil_data', JSON.stringify(state));
-  }, [state]);
-
-  const updateLanding = (data: Partial<LandingData>) => {
-    setState(prev => ({ ...prev, landing: { ...prev.landing, ...data } }));
-  };
-
-  const updateSession = (id: string, data: Partial<SessionData>) => {
-    setState(prev => ({
-      ...prev,
-      sessions: {
-        ...prev.sessions,
-        [id]: { ...prev.sessions[id], ...data }
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        // Check if admin
+        try {
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+          if (userDoc.exists() && userDoc.data().role === 'admin') {
+            setIsAdmin(true);
+          } else if (currentUser.email === 'enzaa120@gmail.com') {
+            setIsAdmin(true);
+            // Bootstrap first admin
+            await setDoc(doc(db, 'users', currentUser.uid), { email: currentUser.email, role: 'admin' }, { merge: true });
+          } else {
+            setIsAdmin(false);
+          }
+        } catch (error) {
+          console.error("Error checking admin status:", error);
+          if (currentUser.email === 'enzaa120@gmail.com') setIsAdmin(true);
+        }
+      } else {
+        setIsAdmin(false);
       }
-    }));
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    // Listen to Landing Data
+    const unsubLanding = onSnapshot(doc(db, 'appData', 'landing'), (doc) => {
+      if (doc.exists()) {
+        setState(prev => ({ ...prev, landing: doc.data() as LandingData }));
+        setIsFirebaseInitialized(true);
+      } else {
+        // Seed if doesn't exist (only if admin to avoid permission errors)
+        if (isAdmin) seedDatabase();
+      }
+    }, (error) => {
+      console.error("Error fetching landing data:", error);
+    });
+
+    // Listen to Sessions
+    const unsubSessions = onSnapshot(collection(db, 'sessions'), (snapshot) => {
+      if (!snapshot.empty) {
+        const sessionsData: Record<string, SessionData> = {};
+        snapshot.forEach(doc => {
+          sessionsData[doc.id] = doc.data() as SessionData;
+        });
+        setState(prev => ({ ...prev, sessions: sessionsData }));
+      }
+    }, (error) => {
+      console.error("Error fetching sessions:", error);
+    });
+
+    // Listen to Videos
+    const unsubVideos = onSnapshot(collection(db, 'videos'), (snapshot) => {
+      if (!snapshot.empty) {
+        const videosData: VideoData[] = [];
+        snapshot.forEach(doc => {
+          videosData.push(doc.data() as VideoData);
+        });
+        setState(prev => ({ ...prev, videos: videosData }));
+      }
+    }, (error) => {
+      console.error("Error fetching videos:", error);
+    });
+
+    return () => {
+      unsubLanding();
+      unsubSessions();
+      unsubVideos();
+    };
+  }, [isAdmin]);
+
+  const login = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
-  const updateVideos = (videos: VideoData[]) => {
-    setState(prev => ({ ...prev, videos }));
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
-  const incrementVideoViews = (id: string) => {
-    setState(prev => ({
-      ...prev,
-      videos: prev.videos.map(video => 
-        video.id === id ? { ...video, views: (typeof video.views === 'number' ? video.views : 0) + 1 } : video
-      )
-    }));
+  const updateLanding = async (data: Partial<LandingData>) => {
+    if (!isAdmin) return;
+    try {
+      await updateDoc(doc(db, 'appData', 'landing'), data);
+    } catch (error) {
+      console.error("Error updating landing:", error);
+    }
   };
+
+  const updateSession = async (id: string, data: Partial<SessionData>) => {
+    if (!isAdmin) return;
+    try {
+      await updateDoc(doc(db, 'sessions', id), data);
+    } catch (error) {
+      console.error("Error updating session:", error);
+    }
+  };
+
+  const updateVideos = async (videos: VideoData[]) => {
+    if (!isAdmin) return;
+    try {
+      const batch = writeBatch(db);
+      videos.forEach(video => {
+        batch.set(doc(db, 'videos', video.id), video);
+      });
+      await batch.commit();
+    } catch (error) {
+      console.error("Error updating videos:", error);
+    }
+  };
+
+  const incrementVideoViews = async (id: string) => {
+    const video = state.videos.find(v => v.id === id);
+    if (video) {
+      try {
+        await updateDoc(doc(db, 'videos', id), { views: video.views + 1 });
+      } catch (error) {
+        console.error("Error incrementing video views:", error);
+      }
+    }
+  };
+
+  // Load local data on mount
+  useEffect(() => {
+    const savedMedia = localStorage.getItem('sahabat_media');
+    const savedAnalytics = localStorage.getItem('sahabat_analytics');
+    
+    if (savedMedia || savedAnalytics) {
+      setState(prev => ({
+        ...prev,
+        mediaLibrary: savedMedia ? JSON.parse(savedMedia) : prev.mediaLibrary,
+        analytics: savedAnalytics ? JSON.parse(savedAnalytics) : prev.analytics
+      }));
+    }
+  }, []);
+
+  // Save local data when it changes
+  useEffect(() => {
+    localStorage.setItem('sahabat_media', JSON.stringify(state.mediaLibrary));
+    localStorage.setItem('sahabat_analytics', JSON.stringify(state.analytics));
+  }, [state.mediaLibrary, state.analytics]);
 
   const addMedia = (media: MediaItem) => {
     setState(prev => ({ ...prev, mediaLibrary: [media, ...prev.mediaLibrary] }));
@@ -315,6 +461,10 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
   return (
     <AppContext.Provider value={{ 
       state, 
+      user,
+      isAdmin,
+      login,
+      logout,
       updateLanding, 
       updateSession,
       updateVideos,
@@ -336,3 +486,4 @@ export const useAppContext = () => {
   if (!context) throw new Error('useAppContext must be used within AppProvider');
   return context;
 };
+

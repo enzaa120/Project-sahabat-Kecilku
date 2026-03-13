@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Video, Plus, Edit3, Trash2, Save, X } from 'lucide-react';
 import { useAppContext, VideoData } from '../context/AppContext';
 
@@ -7,6 +7,10 @@ export default function AdminVideo() {
   const [videos, setVideos] = useState<VideoData[]>(state.videos);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<VideoData | null>(null);
+
+  useEffect(() => {
+    setVideos(state.videos);
+  }, [state.videos]);
 
   const handleAddNew = () => {
     const newVideo: VideoData = {

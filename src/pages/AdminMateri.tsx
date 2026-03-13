@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Edit3, Save, Image as ImageIcon } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import ReactQuill from 'react-quill-new';
@@ -11,6 +11,16 @@ export default function AdminMateri() {
 
   const [landingForm, setLandingForm] = useState(state.landing);
   const [sessionForm, setSessionForm] = useState<any>(null);
+
+  useEffect(() => {
+    setLandingForm(state.landing);
+  }, [state.landing]);
+
+  useEffect(() => {
+    if (editingSessionId && state.sessions[editingSessionId]) {
+      setSessionForm(state.sessions[editingSessionId]);
+    }
+  }, [state.sessions, editingSessionId]);
 
   const handleSaveLanding = () => {
     updateLanding(landingForm);

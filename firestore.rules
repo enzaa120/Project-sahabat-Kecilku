@@ -1,0 +1,143 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: appData
+    // Document ID: landing
+    // Fields:
+    //   - heroTitle: string (required)
+    //   - heroSubtitle: string (required)
+    //   - heroImage: string (required)
+    //
+    // Collection: sessions
+    // Document ID: {sessionId}
+    // Fields:
+    //   - id: string (required)
+    //   - title: string (required)
+    //   - description: string (required)
+    //   - category: string (required)
+    //   - image: string (required)
+    //   - content: string (required)
+    //   - mediaUrl: string (required)
+    //   - mediaType: string (required, enum: 'image', 'video', 'none')
+    //
+    // Collection: videos
+    // Document ID: {videoId}
+    // Fields:
+    //   - id: string (required)
+    //   - title: string (required)
+    //   - description: string (required)
+    //   - thumbnail: string (required)
+    //   - duration: string (required)
+    //   - views: number (required)
+    //   - category: string (required)
+    //   - videoUrl: string (required)
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - email: string (required)
+    //   - role: string (required, enum: 'admin', 'user')
+    //
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "enzaa120@gmail.com" && request.auth.token.email_verified == true));
+    }
+    
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+    
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+    
+    function isValidLandingData(data) {
+      return hasOnlyAllowedFields(['heroTitle', 'heroSubtitle', 'heroImage']) &&
+             hasRequiredFields(['heroTitle', 'heroSubtitle', 'heroImage']) &&
+             data.heroTitle is string && data.heroTitle.size() > 0 && data.heroTitle.size() < 200 &&
+             data.heroSubtitle is string && data.heroSubtitle.size() > 0 && data.heroSubtitle.size() < 500 &&
+             data.heroImage is string && data.heroImage.size() > 0 && data.heroImage.size() < 1000;
+    }
+    
+    function isValidSessionData(data) {
+      return hasOnlyAllowedFields(['id', 'title', 'description', 'category', 'image', 'content', 'mediaUrl', 'mediaType']) &&
+             hasRequiredFields(['id', 'title', 'description', 'category', 'image', 'content', 'mediaUrl', 'mediaType']) &&
+             data.id is string && data.id.size() > 0 && data.id.size() < 50 &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 500 &&
+             data.category is string && data.category.size() > 0 && data.category.size() < 100 &&
+             data.image is string && data.image.size() > 0 && data.image.size() < 1000 &&
+             data.content is string && data.content.size() > 0 && data.content.size() < 50000 &&
+             data.mediaUrl is string && data.mediaUrl.size() <= 1000 &&
+             data.mediaType in ['image', 'video', 'none'];
+    }
+    
+    function isValidVideoData(data) {
+      return hasOnlyAllowedFields(['id', 'title', 'description', 'thumbnail', 'duration', 'views', 'category', 'videoUrl']) &&
+             hasRequiredFields(['id', 'title', 'description', 'thumbnail', 'duration', 'views', 'category', 'videoUrl']) &&
+             data.id is string && data.id.size() > 0 && data.id.size() < 50 &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 1000 &&
+             data.thumbnail is string && data.thumbnail.size() > 0 && data.thumbnail.size() < 1000 &&
+             data.duration is string && data.duration.size() > 0 && data.duration.size() < 20 &&
+             data.views is number && data.views >= 0 &&
+             data.category is string && data.category.size() > 0 && data.category.size() < 100 &&
+             data.videoUrl is string && data.videoUrl.size() > 0 && data.videoUrl.size() < 1000;
+    }
+    
+    function isValidVideoUpdate(data, oldData) {
+      // Allow anyone to increment views by exactly 1, without changing anything else
+      let isViewIncrement = request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']) &&
+                            request.resource.data.views == resource.data.views + 1;
+      
+      return isViewIncrement || (isAdmin() && isValidVideoData(data));
+    }
+    
+    function isValidUser(data) {
+      return hasOnlyAllowedFields(['email', 'role']) &&
+             hasRequiredFields(['email', 'role']) &&
+             data.email is string && data.email.size() > 0 && data.email.size() < 100 &&
+             data.role in ['admin', 'user'];
+    }
+
+    match /appData/landing {
+      allow read: if true;
+      allow create: if isAdmin() && isValidLandingData(request.resource.data);
+      allow update: if isAdmin() && isValidLandingData(request.resource.data);
+      allow delete: if false; // Landing data should not be deleted
+    }
+
+    match /sessions/{sessionId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidSessionData(request.resource.data) && request.resource.data.id == sessionId;
+      allow update: if isAdmin() && isValidSessionData(request.resource.data) && request.resource.data.id == resource.data.id;
+      allow delete: if isAdmin();
+    }
+
+    match /videos/{videoId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidVideoData(request.resource.data) && request.resource.data.id == videoId;
+      allow update: if isValidVideoUpdate(request.resource.data, resource.data);
+      allow delete: if isAdmin();
+    }
+    
+    match /users/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId || isAdmin();
+      // Only admins can create or update roles. Users can't create their own admin role.
+      allow create: if isAdmin() && isValidUser(request.resource.data);
+      allow update: if isAdmin() && isValidUser(request.resource.data);
+      allow delete: if isAdmin();
+    }
+  }
+}

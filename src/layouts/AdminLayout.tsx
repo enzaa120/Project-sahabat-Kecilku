@@ -1,17 +1,18 @@
 import { Outlet, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { Baby, LayoutDashboard, BookOpen, UploadCloud, Video, LogOut, Search, Bell, ExternalLink } from 'lucide-react';
+import { useAppContext } from '../context/AppContext';
 
 export default function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const isAuthenticated = localStorage.getItem('sahabat_admin_auth') === 'true';
+  const { user, isAdmin, logout } = useAppContext();
 
-  if (!isAuthenticated) {
+  if (!user || !isAdmin) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('sahabat_admin_auth');
+  const handleLogout = async () => {
+    await logout();
     navigate('/admin/login');
   };
 
@@ -72,9 +73,12 @@ export default function AdminLayout() {
             <div className="h-8 w-px bg-slate-200"></div>
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold">Admin Sahabat</p>
-                <p className="text-xs text-slate-500">Super Admin</p>
+                <p className="text-sm font-semibold">{user?.displayName || 'Admin Sahabat'}</p>
+                <p className="text-xs text-slate-500">{user?.email}</p>
               </div>
+              {user?.photoURL && (
+                <img src={user.photoURL} alt="Profile" className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
+              )}
             </div>
           </div>
         </header>

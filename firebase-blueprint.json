@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "LandingData": {
+      "title": "LandingData",
+      "description": "Data for the landing page hero section",
+      "type": "object",
+      "properties": {
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "heroImage": { "type": "string" }
+      },
+      "required": ["heroTitle", "heroSubtitle", "heroImage"]
+    },
+    "SessionData": {
+      "title": "SessionData",
+      "description": "Educational session content",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "content": { "type": "string" },
+        "mediaUrl": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["image", "video", "none"] }
+      },
+      "required": ["id", "title", "description", "category", "image", "content", "mediaUrl", "mediaType"]
+    },
+    "VideoData": {
+      "title": "VideoData",
+      "description": "Video library item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "thumbnail": { "type": "string" },
+        "duration": { "type": "string" },
+        "views": { "type": "number" },
+        "category": { "type": "string" },
+        "videoUrl": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "thumbnail", "duration", "views", "category", "videoUrl"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile and role",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/appData/landing": {
+      "schema": { "$ref": "#/entities/LandingData" },
+      "description": "Singleton document for landing page data"
+    },
+    "/sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/SessionData" },
+      "description": "Collection of educational sessions"
+    },
+    "/videos/{videoId}": {
+      "schema": { "$ref": "#/entities/VideoData" },
+      "description": "Collection of videos"
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Collection of users for RBAC"
+    }
+  }
+}

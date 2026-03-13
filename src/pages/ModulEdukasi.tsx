@@ -1,10 +1,10 @@
-import { Info, Bug, AlertTriangle, PlusSquare, Brain, HelpCircle, ArrowRight } from 'lucide-react';
+import { Info, Bug, AlertTriangle, PlusSquare, Brain, MessageSquare, HelpCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
 export default function ModulEdukasi() {
   const { state } = useAppContext();
-  const sessions = Object.values(state.sessions || {}).filter((s: any) => s && s.id);
+  const sessions = Object.values(state.sessions || {}).filter((s: any) => s && s.id) as any[];
 
   // Map icons and colors based on ID for visual consistency
   const getVisuals = (id: string) => {
