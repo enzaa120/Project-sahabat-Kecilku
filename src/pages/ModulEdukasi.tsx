@@ -54,17 +54,6 @@ export default function ModulEdukasi() {
               );
             })}
 
-            {/* Community Card */}
-            <div className="bg-blue-500 rounded-3xl p-8 flex flex-col items-center justify-center text-center text-white shadow-sm">
-              <MessageSquare size={56} className="mb-6 text-white" fill="currentColor" />
-              <h3 className="text-2xl font-bold mb-4">Ada Pertanyaan?</h3>
-              <p className="text-blue-100 text-sm leading-relaxed mb-8">
-                Tanyakan langsung pada tim ahli kami atau berbagi pengalaman dengan ibu lainnya di komunitas.
-              </p>
-              <button className="bg-white text-blue-500 font-bold py-3.5 px-6 rounded-full w-full hover:bg-blue-50 transition-colors">
-                Gabung Komunitas
-              </button>
-            </div>
           </div>
 
           {/* Health Checker Banner */}
