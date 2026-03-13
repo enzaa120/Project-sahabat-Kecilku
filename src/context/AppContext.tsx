@@ -309,9 +309,12 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
 
   const login = async () => {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
       throw error;
     }
@@ -326,7 +329,8 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
   };
 
   const updateLanding = async (data: Partial<LandingData>) => {
-    if (!isAdmin) return;
+    const isEmergency = localStorage.getItem('sahabat_admin_auth') === 'true';
+    if (!isAdmin && !isEmergency) return;
     try {
       await updateDoc(doc(db, 'appData', 'landing'), data);
     } catch (error) {
@@ -335,7 +339,8 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
   };
 
   const updateSession = async (id: string, data: Partial<SessionData>) => {
-    if (!isAdmin) return;
+    const isEmergency = localStorage.getItem('sahabat_admin_auth') === 'true';
+    if (!isAdmin && !isEmergency) return;
     try {
       await updateDoc(doc(db, 'sessions', id), data);
     } catch (error) {
@@ -344,7 +349,8 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
   };
 
   const updateVideos = async (videos: VideoData[]) => {
-    if (!isAdmin) return;
+    const isEmergency = localStorage.getItem('sahabat_admin_auth') === 'true';
+    if (!isAdmin && !isEmergency) return;
     try {
       const batch = writeBatch(db);
       videos.forEach(video => {

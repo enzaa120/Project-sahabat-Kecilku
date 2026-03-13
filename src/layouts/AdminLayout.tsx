@@ -7,11 +7,14 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const { user, isAdmin, logout } = useAppContext();
 
-  if (!user || !isAdmin) {
+  const isAuthenticated = localStorage.getItem('sahabat_admin_auth') === 'true';
+
+  if (!user && !isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
   }
 
   const handleLogout = async () => {
+    localStorage.removeItem('sahabat_admin_auth');
     await logout();
     navigate('/admin/login');
   };

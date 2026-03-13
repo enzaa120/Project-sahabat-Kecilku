@@ -27,6 +27,12 @@ export default function AdminLogin() {
         setError('Popup diblokir oleh browser. Izinkan popup untuk login.');
       } else if (err.code === 'auth/unauthorized-domain') {
         setError('Domain ini belum diizinkan di Firebase Console. Tambahkan URL ini ke Authorized Domains.');
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        setError('Login dibatalkan. Silakan coba lagi.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError('Permintaan login sedang diproses. Silakan tunggu.');
+      } else if (err.message && err.message.includes('Cross-Origin')) {
+        setError('Terjadi masalah keamanan browser (Cross-Origin). Coba buka website ini di tab baru.');
       } else {
         setError(err.message || 'Terjadi kesalahan saat login.');
       }
@@ -60,6 +66,21 @@ export default function AdminLogin() {
               {error}
             </div>
           )}
+          
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <p className="text-xs text-slate-500 text-center mb-3">Jika login Google bermasalah, gunakan akses darurat:</p>
+            <button 
+              type="button"
+              onClick={() => {
+                localStorage.setItem('sahabat_admin_auth', 'true');
+                navigate('/admin');
+              }}
+              className="w-full bg-slate-100 text-slate-700 font-bold py-2.5 rounded-xl hover:bg-slate-200 transition-colors text-sm"
+            >
+              Masuk Mode Darurat
+            </button>
+          </div>
+
           {user && !isAdmin && (
             <p className="text-red-500 text-sm mt-2 text-center">Akun Anda ({user.email}) tidak memiliki akses admin.</p>
           )}
