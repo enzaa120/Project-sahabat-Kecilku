@@ -9,6 +9,7 @@ export interface SessionData {
   description: string;
   category: string;
   image: string; // Background image
+  iconImage?: string; // Icon image for the card
   content: string; // Main text content
   mediaUrl: string; // Image or video URL at the bottom
   mediaType: 'image' | 'video' | 'none';

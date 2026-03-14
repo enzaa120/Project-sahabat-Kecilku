@@ -39,7 +39,7 @@ export default function LandingPage() {
             <div className="relative aspect-square rounded-2xl bg-orange-50 overflow-hidden shadow-2xl">
               <img src={landing.heroImage} alt="Ibu dan anak" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur p-4 rounded-xl flex items-center gap-4 border border-white">
-                <div className="size-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+                <div className="size-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0">
                   <ShieldCheck size={24} />
                 </div>
                 <div>

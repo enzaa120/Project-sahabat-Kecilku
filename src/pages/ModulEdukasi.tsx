@@ -37,8 +37,12 @@ export default function ModulEdukasi() {
               const visuals = getVisuals(modul.id);
               return (
                 <div key={modul.id} className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col hover:shadow-md transition-shadow">
-                  <div className={`h-48 flex items-center justify-center ${visuals.bgColor}`}>
-                    <visuals.icon size={64} className={visuals.iconColor} fill="currentColor" />
+                  <div className={`h-48 flex items-center justify-center ${modul.iconImage ? 'bg-slate-50' : visuals.bgColor}`}>
+                    {modul.iconImage ? (
+                      <img src={modul.iconImage} alt={`Ikon ${modul.title}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <visuals.icon size={64} className={visuals.iconColor} fill="currentColor" />
+                    )}
                   </div>
                   <div className="p-8 flex flex-col flex-1">
                     <div className="flex items-center gap-3 mb-4">
