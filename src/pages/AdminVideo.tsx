@@ -134,11 +134,15 @@ export default function AdminVideo() {
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 mb-2">URL Video (YouTube Embed / MP4)</label>
+              <label className="block text-sm font-bold text-slate-700 mb-2">URL Video</label>
+              <div className="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl mb-3 text-xs">
+                Bisa menggunakan link <strong>YouTube</strong>, link <strong>Google Drive</strong>, atau link file <strong>MP4</strong>.
+              </div>
               <input 
                 type="text" 
                 value={formData.videoUrl}
                 onChange={(e) => setFormData({...formData, videoUrl: e.target.value})}
+                placeholder="https://youtube.com/... atau https://drive.google.com/..."
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>

@@ -107,6 +107,15 @@ export default function VideoEdukasi() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowFullScreen
               ></iframe>
+            ) : playingVideo.includes('drive.google.com') ? (
+              <iframe 
+                className="w-full h-full"
+                src={playingVideo.replace(/\/view.*$/, '/preview')} 
+                title="Video Edukasi (Google Drive)"
+                frameBorder="0" 
+                allow="autoplay" 
+                allowFullScreen
+              ></iframe>
             ) : (
               <video controls autoPlay className="w-full h-full object-contain">
                 <source src={playingVideo} type="video/mp4" />

@@ -21,6 +21,8 @@ export default function AdminLogin() {
     setError(null);
     try {
       await login();
+      // Do not set isLoading to false here, let the useEffect navigate away
+      // This prevents the 'insertBefore' React crash during unmount
     } catch (err: any) {
       console.error(err);
       if (err.code === 'auth/popup-blocked') {
@@ -36,7 +38,6 @@ export default function AdminLogin() {
       } else {
         setError(err.message || 'Terjadi kesalahan saat login.');
       }
-    } finally {
       setIsLoading(false);
     }
   };
@@ -46,6 +47,7 @@ export default function AdminLogin() {
     setError(null);
     try {
       await loginWithRedirect();
+      // Do not set isLoading to false here
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'Terjadi kesalahan saat login redirect.');

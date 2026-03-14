@@ -107,6 +107,15 @@ export default function DetailSesi() {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowFullScreen
                       ></iframe>
+                    ) : data.mediaUrl.includes('drive.google.com') ? (
+                      <iframe 
+                        className="w-full h-full"
+                        src={data.mediaUrl.replace(/\/view.*$/, '/preview')} 
+                        title="Video Edukasi (Google Drive)"
+                        frameBorder="0" 
+                        allow="autoplay" 
+                        allowFullScreen
+                      ></iframe>
                     ) : (
                       <video controls className="w-full h-full object-cover">
                         <source src={data.mediaUrl} type="video/mp4" />
