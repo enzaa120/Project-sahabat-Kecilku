@@ -7,27 +7,27 @@ export default function AdminDashboard() {
   const { analytics } = state;
 
   const stats = [
-    { title: 'Total Pengguna', value: analytics.totalUsers.toLocaleString(), change: '+8%', isPositive: true, icon: Users, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { title: 'Materi Dibaca', value: analytics.materiViews.toLocaleString(), change: '-3%', isPositive: false, icon: FileText, color: 'text-emerald-500', bg: 'bg-emerald-50' },
-    { title: 'Video Ditonton', value: analytics.videoViews.toLocaleString(), change: '+24%', isPositive: true, icon: Video, color: 'text-orange-500', bg: 'bg-orange-50' },
-    { title: 'Penggunaan Checker', value: analytics.checkerUses.toLocaleString(), change: '+12%', isPositive: true, icon: Activity, color: 'text-purple-500', bg: 'bg-purple-50' },
+    { title: 'Total Pengguna', value: (analytics?.totalUsers || 0).toLocaleString(), change: '+8%', isPositive: true, icon: Users, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { title: 'Materi Dibaca', value: (analytics?.materiViews || 0).toLocaleString(), change: '-3%', isPositive: false, icon: FileText, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { title: 'Video Ditonton', value: (analytics?.videoViews || 0).toLocaleString(), change: '+24%', isPositive: true, icon: Video, color: 'text-orange-500', bg: 'bg-orange-50' },
+    { title: 'Penggunaan Checker', value: (analytics?.checkerUses || 0).toLocaleString(), change: '+12%', isPositive: true, icon: Activity, color: 'text-purple-500', bg: 'bg-purple-50' },
   ];
 
   // Sort materi by views
-  const popularMateri = Object.entries(analytics.materiStats)
+  const popularMateri = Object.entries(analytics?.materiStats || {})
     .map(([id, views]) => ({
       id,
       title: state.sessions[id]?.title || `Sesi ${id}`,
       category: state.sessions[id]?.category || 'Materi',
-      views: Number(views)
+      views: Number(views) || 0
     }))
     .sort((a, b) => b.views - a.views)
     .slice(0, 4);
 
   // Format activity data for chart
-  const chartData = analytics.activityData.map(item => ({
+  const chartData = (analytics?.activityData || []).map(item => ({
     date: item.date,
-    pengguna: item.views
+    pengguna: item.views || 0
   }));
 
   return (

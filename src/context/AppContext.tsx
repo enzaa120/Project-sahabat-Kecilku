@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
 import { doc, collection, onSnapshot, setDoc, updateDoc, getDoc, getDocs, writeBatch } from 'firebase/firestore';
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, User } from 'firebase/auth';
 
 export interface SessionData {
   id: string;
@@ -181,6 +181,7 @@ interface AppContextType {
   user: User | null;
   isAdmin: boolean;
   login: () => Promise<void>;
+  loginWithRedirect: () => Promise<void>;
   logout: () => Promise<void>;
   updateLanding: (data: Partial<LandingData>) => void;
   updateSession: (id: string, data: Partial<SessionData>) => void;
@@ -320,6 +321,19 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
     }
   };
 
+  const loginWithRedirect = async () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    try {
+      await signInWithRedirect(auth, provider);
+    } catch (error: any) {
+      console.error("Redirect login failed:", error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -379,11 +393,26 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
     const savedAnalytics = localStorage.getItem('sahabat_analytics');
     
     if (savedMedia || savedAnalytics) {
-      setState(prev => ({
-        ...prev,
-        mediaLibrary: savedMedia ? JSON.parse(savedMedia) : prev.mediaLibrary,
-        analytics: savedAnalytics ? JSON.parse(savedAnalytics) : prev.analytics
-      }));
+      setState(prev => {
+        let parsedAnalytics = prev.analytics;
+        try {
+          if (savedAnalytics) {
+            const parsed = JSON.parse(savedAnalytics);
+            parsedAnalytics = { ...prev.analytics, ...parsed };
+            // Ensure nested objects exist
+            parsedAnalytics.materiStats = parsed.materiStats || prev.analytics.materiStats;
+            parsedAnalytics.activityData = parsed.activityData || prev.analytics.activityData;
+          }
+        } catch (e) {
+          console.error("Error parsing saved analytics", e);
+        }
+
+        return {
+          ...prev,
+          mediaLibrary: savedMedia ? JSON.parse(savedMedia) : prev.mediaLibrary,
+          analytics: parsedAnalytics
+        };
+      });
     }
   }, []);
 
@@ -471,6 +500,7 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
       user,
       isAdmin,
       login,
+      loginWithRedirect,
       logout,
       updateLanding, 
       updateSession,

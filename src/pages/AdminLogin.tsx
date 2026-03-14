@@ -4,7 +4,7 @@ import { Shield, ArrowRight, LogIn, Loader2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 export default function AdminLogin() {
-  const { login, user, isAdmin } = useAppContext();
+  const { login, loginWithRedirect, user, isAdmin } = useAppContext();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +41,18 @@ export default function AdminLogin() {
     }
   };
 
+  const handleRedirectLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await loginWithRedirect();
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Terjadi kesalahan saat login redirect.');
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-6">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-100 p-8">
@@ -59,7 +71,17 @@ export default function AdminLogin() {
             className="w-full bg-blue-500 text-white font-bold py-3.5 rounded-xl hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 mt-2 disabled:opacity-70"
           >
             {isLoading ? <Loader2 size={20} className="animate-spin" /> : <LogIn size={20} />} 
-            {isLoading ? 'Memproses...' : 'Login dengan Google'}
+            {isLoading ? 'Memproses...' : 'Login dengan Google (Popup)'}
+          </button>
+          
+          <button 
+            type="button" 
+            onClick={handleRedirectLogin}
+            disabled={isLoading}
+            className="w-full bg-white text-blue-500 border-2 border-blue-500 font-bold py-3 rounded-xl hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+          >
+            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <LogIn size={20} />} 
+            Login Alternatif (Redirect)
           </button>
           {error && (
             <div className="p-3 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 text-center">
