@@ -224,22 +224,6 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
           batch.set(doc(db, 'sessions', session.id), session);
         });
         await batch.commit();
-      } else {
-        // Force update existing sessions with the new iconImages requested by user
-        let needsUpdate = false;
-        const batch = writeBatch(db);
-        sessionsSnapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          const defaultSession = defaultState.sessions[docSnap.id as keyof typeof defaultState.sessions];
-          // If the document in firestore doesn't have an iconImage, but our default state does, update it
-          if (defaultSession && defaultSession.iconImage && !data.iconImage) {
-            batch.update(docSnap.ref, { iconImage: defaultSession.iconImage });
-            needsUpdate = true;
-          }
-        });
-        if (needsUpdate) {
-          await batch.commit();
-        }
       }
 
       const videosSnapshot = await getDocs(collection(db, 'videos'));
@@ -308,11 +292,6 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
         const sessionsData: Record<string, SessionData> = {};
         snapshot.forEach(doc => {
           const data = doc.data() as SessionData;
-          const defaultSession = defaultState.sessions[doc.id as keyof typeof defaultState.sessions];
-          // Fallback to default iconImage if missing in DB
-          if (!data.iconImage && defaultSession?.iconImage) {
-            data.iconImage = defaultSession.iconImage;
-          }
           sessionsData[doc.id] = data;
         });
         setState(prev => ({ ...prev, sessions: sessionsData }));

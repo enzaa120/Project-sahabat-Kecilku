@@ -71,13 +71,14 @@ service cloud.firestore {
     }
     
     function isValidSessionData(data) {
-      return hasOnlyAllowedFields(['id', 'title', 'description', 'category', 'image', 'content', 'mediaUrl', 'mediaType']) &&
+      return hasOnlyAllowedFields(['id', 'title', 'description', 'category', 'image', 'iconImage', 'content', 'mediaUrl', 'mediaType']) &&
              hasRequiredFields(['id', 'title', 'description', 'category', 'image', 'content', 'mediaUrl', 'mediaType']) &&
              data.id is string && data.id.size() > 0 && data.id.size() < 50 &&
              data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
              data.description is string && data.description.size() > 0 && data.description.size() < 500 &&
              data.category is string && data.category.size() > 0 && data.category.size() < 100 &&
              data.image is string && data.image.size() > 0 && data.image.size() < 1000 &&
+             (!('iconImage' in data) || (data.iconImage is string && data.iconImage.size() <= 1000)) &&
              data.content is string && data.content.size() > 0 && data.content.size() < 50000 &&
              data.mediaUrl is string && data.mediaUrl.size() <= 1000 &&
              data.mediaType in ['image', 'video', 'none'];

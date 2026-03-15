@@ -117,7 +117,7 @@ export default function DetailSesi() {
                         allowFullScreen
                       ></iframe>
                     ) : (
-                      <video controls className="w-full h-full object-cover">
+                      <video controls className="w-full h-full object-contain bg-black">
                         <source src={data.mediaUrl} type="video/mp4" />
                         Browser Anda tidak mendukung tag video.
                       </video>

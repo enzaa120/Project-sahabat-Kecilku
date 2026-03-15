@@ -21,6 +21,7 @@
         "description": { "type": "string" },
         "category": { "type": "string" },
         "image": { "type": "string" },
+        "iconImage": { "type": "string" },
         "content": { "type": "string" },
         "mediaUrl": { "type": "string" },
         "mediaType": { "type": "string", "enum": ["image", "video", "none"] }
