@@ -85,15 +85,16 @@ export default function DetailSesi() {
         <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16">
           {/* Main Article */}
           <article className="flex-1 min-w-0 prose prose-slate prose-lg max-w-[800px] prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-500 prose-img:rounded-2xl prose-img:shadow-md prose-img:w-full prose-img:object-cover ql-snow">
+            
             <div 
               className="text-slate-800 leading-relaxed tracking-wide ql-editor overflow-hidden"
               style={{ padding: 0 }}
               dangerouslySetInnerHTML={{ __html: displayContent }}
             />
 
-            {/* Admin Managed Media */}
+            {/* Admin Managed Media - Moved to bottom for summary */}
             {data.mediaType !== 'none' && data.mediaUrl && (
-              <div className="mt-12 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 w-full">
+              <div className="mt-12 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 w-full shadow-sm">
                 {data.mediaType === 'image' ? (
                   <img src={data.mediaUrl} alt="Media tambahan" className="w-full h-auto" referrerPolicy="no-referrer" />
                 ) : data.mediaType === 'video' ? (

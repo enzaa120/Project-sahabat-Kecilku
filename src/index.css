@@ -38,4 +38,10 @@
     border-bottom-right-radius: 0.75rem;
     border-color: #e2e8f0 !important;
   }
+  .ql-video, .ql-editor iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    height: auto;
+    border-radius: 1rem;
+  }
 }
