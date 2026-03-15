@@ -34,7 +34,14 @@ export default function AdminMateri() {
 
   const handleSaveSession = () => {
     if (editingSessionId && sessionForm) {
-      updateSession(editingSessionId, sessionForm);
+      // Clean up undefined values before saving to Firestore
+      const cleanedData = { ...sessionForm };
+      Object.keys(cleanedData).forEach(key => {
+        if (cleanedData[key] === undefined) {
+          delete cleanedData[key];
+        }
+      });
+      updateSession(editingSessionId, cleanedData);
       alert('Sesi berhasil diperbarui!');
       setEditingSessionId(null);
     }
@@ -203,7 +210,7 @@ export default function AdminMateri() {
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">URL Foto Ikon Kartu (Opsional)</label>
                   <div className="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl mb-3 text-xs">
-                    Gambar ini akan menggantikan ikon bawaan pada kartu materi edukasi. Gunakan gambar persegi (1:1) dengan background transparan untuk hasil terbaik.
+                    Gambar ini akan menggantikan ikon bawaan pada kartu materi edukasi. Anda dapat menggunakan gambar dengan rasio bebas (seperti poster portrait). Gambar akan disesuaikan secara otomatis.
                   </div>
                   <input 
                     type="text" 
@@ -213,7 +220,7 @@ export default function AdminMateri() {
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                   {sessionForm.iconImage && (
-                    <div className="mt-4 size-24 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex items-center justify-center">
+                    <div className="mt-4 h-48 w-32 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex items-center justify-center p-2">
                       <img src={sessionForm.iconImage} alt="Preview Ikon" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                     </div>
                   )}

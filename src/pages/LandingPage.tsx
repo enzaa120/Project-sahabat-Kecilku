@@ -37,7 +37,11 @@ export default function LandingPage() {
           </div>
           <div className="flex-1 w-full max-w-[540px]">
             <div className="relative aspect-square rounded-2xl bg-orange-50 overflow-hidden shadow-2xl">
-              <img src={landing.heroImage} alt="Ibu dan anak" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              {landing.heroImage ? (
+                <img src={landing.heroImage} alt="Ibu dan anak" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="w-full h-full bg-slate-100 animate-pulse"></div>
+              )}
               <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur p-4 rounded-xl flex items-center gap-4 border border-white">
                 <div className="size-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0">
                   <ShieldCheck size={24} />

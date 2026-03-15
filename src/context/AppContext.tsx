@@ -60,7 +60,7 @@ const defaultState: AppState = {
   landing: {
     heroTitle: "Langkah Kecil, Lindungi Paru-Paru Si Kecil",
     heroSubtitle: "Sahabat SiKecil hadir untuk mendampingi Anda dengan informasi terpercaya, deteksi dini, dan panduan penanganan pneumonia pada balita.",
-    heroImage: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=1000&auto=format&fit=crop"
+    heroImage: ""
   },
   sessions: {
     '1': {
@@ -69,6 +69,7 @@ const defaultState: AppState = {
       description: '(Latar belakang, Pengertian, Anatomi Sistem Pernapasan, Penyebab, dan Faktor Risiko)',
       category: 'Dasar',
       image: 'https://i.ibb.co.com/sdytc8Sz/Chat-GPT-Image-12-Mar-2026-03-35-37.png',
+      iconImage: 'https://storage.googleapis.com/macaulay-prod-us-central1-user-images/08d519d1-396e-4404-897e-122e032598d9',
       content: 'Latar belakang \n\nPneumonia adalah penyakit infeksi pada kantong udara (alveoli) di paru-paru. Penyakit ini merupakan penyebab kematian nomor satu pada balita di dunia, merenggut sekitar 739.000 jiwa pada tahun 2023, dan mayoritas menyerang usia 2–59 bulan. \n\nSituasi di Indonesia dan Jawa Barat\n\nNasional: Menjadi penyebab utama kematian balita dengan 166.702 kasus pada 2022. Angka kematian pada bayi tiga kali lebih tinggi dibandingkan dengan kelompok usia 1–4 tahun. \n\nJawa Barat: Mengalami tren kenaikan kasus dari 44,90% (2022) menjadi 45% (2023). \n\nKota Tasikmalaya: Berada di urutan ke-11 di Jawa Barat (53,6% kasus) Deteksi dini dan perawatan yang tepat sangat penting untuk menurunkan angka kesakitan dan kematian. \n\n![Deskripsi Gambar](https://i.ibb.co.com/PZCTTrnF/gambar-infografis-pneumonia-Indonesia.jpg) \n\nPengertian Pneumonia & Bronkopneumonia \n\nPengertian: Pneumonia adalah infeksi sistem pernapasan bawah. Bronkopneumonia secara spesifik adalah radang pada saluran bronkial dan alveoli (bagian terkecil paru-paru). \n\nAnatomi Sistem Pernafasan \n\nSaluran Napas Atas Sistem pernapasan balita dirancang untuk pertukaran gas yang efisien — dari hidung hingga alveoli, setiap bagian memiliki peran penting dalam menjaga oksigenasi tubuh.Saluran pernapasan atas terdiri dari: Hidung, faring, dan laring menyaring, menghangatkan, dan melembabkan udara sebelum masuk lebih dalam. \n\nSaluran Napas Bawah Trakea bercabang menjadi bronkus kanan dan kiri, lalu ke bronkiolus hingga alveoli sebagai tempat pertukaran gas. \n\nParu-paru Balita Lobus kanan (3 lobus) dan lobus kiri (2 lobus), dilapisi pleura licin untuk memudahkan gerakan saat bernapas. \n\nMekanisme Pernapasan Diafragma dan otot dada bekerja aktif mengembang dan mengempis paru-paru yang elastis secara ritmis. \n\n![Deskripsi Gambar](https://i.ibb.co.com/zHx4MpW1/gambar-anatomi-sistem-pernapasan-balita.png)\n\nPerbedaan paru-paru balita Normal VS Paru-paru balita pneumonia\n\n![Deskripsi Gambar](https://i.ibb.co.com/VY4m6TQx/gambar-paru-normal-vs-pneumonia.jpg)',
       mediaUrl: 'https://res.cloudinary.com/dajhxjagk/video/upload/v1773254486/Sesi_1_Latar_Belakang_n2r73t.mp4',
       mediaType: 'video'
@@ -79,6 +80,7 @@ const defaultState: AppState = {
       description: 'Pahami pemicu utama infeksi paru-paru dan lingkungan apa saja yang meningkatkan risiko bagi Si Kecil.',
       category: 'Penyebab',
       image: 'https://i.ibb.co.com/21f1zvm9/Chat-GPT-Image-12-Mar-2026-03-47-23.png',
+      iconImage: 'https://storage.googleapis.com/macaulay-prod-us-central1-user-images/87e743a6-5c5b-437a-a63e-67035f299066',
       content: 'Penyebab Penyebab pneumonia paling banyak dikarenakan oleh: \n\nVirus seperti Haemophillus influenza, \nBakteri yaitu staphylococcus aureus, serta streptococcus pneumonia, Pseudomonas aeruginosa, Klebsiella pneumoniae, Escherichia coli Proteus \nKuman atipik chlamydia dan mikoplasma \n![Deskripsi Gambar](https://i.ibb.co.com/fVWyvdrC/Picture1.png)\n\n Faktor Resiko kajadian Pneumonia \n\n1. Faktor Risiko "Pasti" (Terbukti Secara Ilmiah) \n\nKondisi Bayi: Berat Badan Lahir Rendah (BBLR < 2,5 kg) dan Gizi Buruk (stunting/wasting). \nPola Asuh: Kurang ASI eksklusif (berhenti sebelum 4 bulan) dan imunisasi tidak lengkap (terutama campak).\nLingkungan: Polusi udara dalam ruangan (asap bahan bakar memasak) dan kepadatan hunian (lebih dari 7 orang serumah). \nKesehatan Medis: Adanya infeksi HIV.\n\n2. Faktor Risiko "Mungkin Sekali" \n\nLingkungan & Sosial: Perokok pasif di rumah dan rendahnya tingkat pendidikan ibu mengenai pneumonia. \nBiologis: Jenis kelamin laki-laki, kelahiran prematur (< 37 minggu), dan anemia (Hb < 11 mg/dl). \nNutrisi Spesifik: Kekurangan Vitamin D dan kekurangan zat besi (Zinc). \n\n3. Faktor Risiko "Mungkin" \n\nRiwayat & Jarak Lahir: Jarak kelahiran terlalu dekat (< 24 bulan), urutan kelahiran (anak ke-4 atau lebih), dan riwayat pernah menderita pneumonia sebelumnya. \nLainnya: Penggunaan tempat penitipan anak (day care) dan defisiensi Vitamin A. \n\n4. Faktor Risiko Menurut Kemenkes RI \n\nSosial Ekonomi & Budaya: Mempengaruhi gaya hidup dan kemampuan akses gizi. \nPerilaku Pencarian Pengobatan: Kecepatan keluarga dalam membawa anak ke fasilitas kesehatan (care seeking behavior). \nKualitas Pelayanan: Kesiapan petugas kesehatan dalam memberikan penanganan. \n![Deskripsi Gambar](https://i.ibb.co.com/5W3qqkGY/Picture2.png)',
       mediaUrl: 'https://res.cloudinary.com/dajhxjagk/video/upload/v1773254485/Tanda_Gejala_Klasifikasi_Pneumonia_dan_Perjalanan_Penyakit_qa1u1r.mp4',
       mediaType: 'video'
@@ -89,6 +91,7 @@ const defaultState: AppState = {
       description: 'Tanda & Gejala, Klasifikasi Pneumonia, dan Perjalanan Penyakit',
       category: 'Gejala',
       image: 'https://i.ibb.co.com/Xf9djL6b/Chat-GPT-Image-12-Mar-2026-18-53-44.png',
+      iconImage: 'https://storage.googleapis.com/macaulay-prod-us-central1-user-images/4f971c26-8802-421b-b461-9c636f8c4746',
       content: 'Tanda Dan Gejala\n\nSecara umum, pneumonia sering kali diawali dengan gejala Infeksi Saluran Pernapasan Atas (ISPA) yang kemudian berkembang menjadi kondisi yang lebih serius. \n\n1. Gejala Umum (Kunci Utama) Tanda yang paling sering muncul adalah: \n\nGangguan Pernapasan: Napas cepat (takipnea), tarikan dinding dada ke dalam (retraksi), dan napas cuping hidung. \nSuara Napas Tambahan: Terdengar suara crackles (seperti rontgen), wheezing (mengi), atau suara napas yang menurun. \nKondisi Tubuh: Demam tinggi, menggigil, batuk (kering atau berdahak), serta nyeri pada dada, perut, atau leher. \nPerubahan Perilaku: Anak tampak lemas (letargi), gelisah, sulit minum/menyusu, hingga warna kulit membiru (sianosis) karena kurang oksigen. \n\n3. Tanda Bahaya yang Perlu Diwaspadai Penelitian menunjukkan bahwa hampir 60% kasus pneumonia pada anak ditandai dengan dua hal utama yang bisa dilihat langsung oleh orang tua: \n\nNapas Cepat: Frekuensi napas yang melebihi batas normal sesuai usia. \nTarikan Dinding Dada: Dada tampak mencekung ke dalam saat anak menarik napas. \n\nCatatan Penting: Deteksi dini pada tanda-tanda di atas sangat krusial karena pneumonia dapat berkembang cepat menjadi kondisi berat (toksemia) jika tidak segera ditangani. \n\n![Deskripsi Gambar](https://i.ibb.co.com/bRBsj68n/Picture3.png) \n\nKlasifikasi Pneumonia \n\nPneumonia Berat: Ditandai dengan tarikan dinding dada ke dalam atau saturasi oksigen < 92%. \nPneumonia: Ditandai dengan napas cepat (Usia 2-<12 bulan: ≥50x/menit; Usia 12 bulan-<5 tahun: ≥40x/menit). \nBatuk Bukan Pneumonia: Hanya batuk pilek biasa tanpa napas cepat atau tarikan dinding dada \n![Deskripsi Gambar](https://i.ibb.co.com/ccVNWjY8/Picture4.png) \n\nPerjalanan Penyakit Pneumonia Balita \n\n![Deskripsi Gambar](https://i.ibb.co.com/rftj3sns/Picture5.png) \n\nKomplikasi \n\n1. Masalah pada Paru-Paru \n\nCairan atau Nanah di Paru (Efusi Pleura & Empiema): Adanya penumpukan cairan atau nanah di selaput paru. Tandanya biasanya si Kecil tetap demam tinggi meski sudah diobati dan terlihat sesak. \nParu-Paru Berlubang atau Rusak: Infeksi yang parah bisa membuat jaringan paru-paru luka, berlubang, atau bahkan kempis sehingga fungsi napas terganggu. \nParu-Paru Bocor (Pneumotoraks): Adanya udara yang terjebak di luar paru-paru yang membuat paru-paru tertekan. \n\n2. Masalah yang Menyebar ke Seluruh Tubuh \n\nInfeksi Darah (Sepsis): Kuman dari paru-paru masuk ke aliran darah dan menyebar ke seluruh tubuh. Ini sangat berbahaya karena bisa memicu syok (tekanan darah turun drastis). \nGagal Organ: Jika infeksi sudah terlalu berat, organ tubuh lain seperti ginjal atau jantung bisa ikut terganggu fungsinya. \n\n3. Tanda Khusus yang Perlu Diperhatikan (Menurut WHO) \n\nInfeksi Kulit Bernanah: Jika pneumonia disertai bintik-bintik bernanah di kulit, ini bisa jadi tanda pneumonia jenis stafilokokus yang cukup agresif. \nSesak Napas Berat: Segera bawa ke RS jika si Kecil terlihat sangat kesulitan bernapas (napas cuping hidung atau dada tampak mencekung ke dalam). \n![Deskripsi Gambar](https://i.ibb.co.com/Z1wBnrWv/Picture6.png)',
       mediaUrl: 'https://res.cloudinary.com/dajhxjagk/video/upload/v1773254480/Penyebab_Risiko_vesaop.mp4',
       mediaType: 'video'
@@ -99,6 +102,7 @@ const defaultState: AppState = {
       description: 'Pemeriksaan diagnostik, Penatalaksanaan, Deteksi dini, perawatan Pencegahan',
       category: 'Perawatan',
       image: 'https://i.ibb.co.com/BKtNYN3m/Chat-GPT-Image-12-Mar-2026-18-57-58.png',
+      iconImage: 'https://storage.googleapis.com/macaulay-prod-us-central1-user-images/b48995c6-2358-47c3-8532-3868037c768c',
       content: 'Pemeriksaan Laboratorium \n\n1. Cek Darah Lengkap: \n\no Tujuannya: Melihat jumlah sel darah putih. Jika tinggi, tandanya ada infeksi bakteri yang sedang menyerang tubuh. \n\n2. Cek Penanda Radang (CRP/LED): \n\no Tujuannya: Mengetahui seberapa parah peradangan atau "luka" yang ada di paru-paru si Kecil. \n\n3. Cek Dahak (Sputum): \n\no Tujuannya: Mencari tahu jenis kuman penyebabnya agar dokter bisa memberikan jenis antibiotik yang paling pas. \n\n4. Cek Oksigen Darah (Gas Darah): \n\no Tujuannya: Dilakukan jika si Kecil sesak hebat, untuk memastikan apakah oksigen dalam darahnya masih cukup atau butuh bantuan alat napas. \n\n5. Biakan Darah (Kultur): \n\no Tujuannya: memastikan apakah kuman sudah menyebar dari paru-paru ke aliran darah (mencegah infeksi berat). \n\n![Deskripsi Gambar](https://i.ibb.co.com/nxTBw8z/Picture7.png) \n\nPenatalaksanaan \n\n1. Kapan Harus Dirawat di Rumah Sakit? \n\n• Jika anak terlihat sangat sesak napas atau kekurangan oksigen. \n\n• Jika anak lemas atau sulit minum dan sulit menelan obat. \n\n2. Perawatan Pendukung di Rumah/RS \n\n• Cairan & Nutrisi: Pastikan anak tidak dehidrasi/ kekurangan cairan dan tetap makan agar kuat melawan kuman. \n\n• Bantuan Napas: Pemberian oksigen atau bantuan mengeluarkan dahak agar jalan napas lega. \n\n3. Pemberian Antibiotik yang Tepat \n\n• Sesuai Umur: Jenis dan dosis antibiotik dibedakan antara bayi baru lahir, balita, hingga anak sekolah. \n\n• Harus Tuntas: Obat biasanya diberikan selama 10–14 hari. Jangan berhenti sebelum waktunya, meski anak sudah tidak demam (minimal bebas demam 3 hari baru boleh evaluasi berhenti). \n\n4. Pengobatan Khusus \n\n• Dokter akan memilih jenis obat yang paling kuat berdasarkan jenis kuman penyebabnya (misalnya untuk kuman Stafilokokus atau M. pneumonia). \n\nPenting untuk Ibu: Kunci kesembuhan adalah disiplin dosis dan menjaga asupan cairan si Kecil. \n\n![Deskripsi Gambar](https://i.ibb.co.com/bMggSnB3/Picture8.png) \n\nDeteksi Dini \n\nCara Cepat Deteksi Pneumonia (Paru-Paru Basah) di Rumah Ibu, ingatlah rumus "Lihat, Dengar, Pantau" jika si Kecil sedang batuk atau pilek: \n\n1. LIHAT: Hitung Kecepatan Napas Buka baju si Kecil dan lihat dadanya saat ia tenang/tidur. Ia disebut napas cepat jika dalam 1 menit: \n\n• Usia < 2 bulan: 60 kali atau lebih. \n\n• Usia 2-12 bulan: 50 kali atau lebih. \n\n• Usia 1-5 tahun: 40 kali atau lebih. \n\n• Waspada: Jika dada bagian bawah mencekung ke dalam setiap kali anak menarik napas. \n\n2. DENGAR: Suara Napas Dengarkan saat si Kecil bernapas: \n\n• Apakah ada suara "ngrok-ngrok" atau bunyi mengi (seperti siulan)? \n\n• Apakah anak bernapas sambil merintih atau terlihat sangat kecapekan untuk bernapas? \n\n3. PANTAU: Kondisi Tubuh Segera bawa ke dokter jika: \n\n• Demam tinggi yang tidak turun-turun. \n\n• Malas minum/menyusu (karena capek bernapas). \n\n• Bibir atau kuku mulai membiru (Ini tanda bahaya darurat!). \n\nIntinya: Jika anak batuk disertai napas cepat atau dada mencekung, jangan tunggu besok. Segera bawa ke Puskesmas atau Rumah Sakit terdekat. \n\n![Deskripsi Gambar](https://i.ibb.co.com/b5ZFvmSD/Picture9.png) \n\nPerawatan Balita \n\nIbu bisa menjadi "dokter pertama" bagi si Kecil dengan melakukan tiga langkah utama berikut: \n\n1. Pengukuran Frekuensi Napas Dihitung selama 1 menit saat anak tenang. Amati pergerakan dada/perut dan tanda napas cepat sesuai kriteria usia. \n\n2. Pengukuran Saturasi Oksigen Menggunakan oksimetri pada ibu jari anak untuk menilai kadar oksigen arteri (Normal: 95-100%). \n\n3. Penanganan Demam (Water Tepid Sponge) Teknik kompres air hangat untuk menurunkan suhu tubuh. \n\n• Persiapan: Baskom air hangat, waslap, termometer, dan handuk. \n\n• Prosedur: Ukur suhu awal, buka pakaian, lapisi tempat tidur dengan perlak, lalu letakkan waslap basah di ketiak dan lipatan paha selama 3-5 menit. \n\n4. Inhalasi Aromaterapi Peppermint Oil Tindakan non-farmakologi untuk mengatasi bersihan jalan napas yang tidak efektif. \n\n• Manfaat: Mengurangi sesak napas (dispnea), mengurangi peradangan, melegakan saluran napas, dan memberikan relaksasi. \n\n• Cara: Gunakan diffuser (50ml air + 4-5 tetes minyak) dengan jarak 10-15 cm dari anak selama 10-15 menit. \n\n5. Fisioterapi Dada Bertujuan membantu mengeluarkan dahak dan mengoptimalkan fungsi paru. \n\n• Teknik: Lakukan perkusi (ketukan dengan tangan ditangkupkan) selama 3-5 menit, dilanjutkan dengan vibrasi (getaran dengan posisi tangan rata) pada area paru yang mengalami penumpukan dahak. \n\n6. Nutrisi dan Pengobatan \n\n• Nutrisi: Berikan ASI eksklusif hingga 6 bulan karena mengandung zat anti-infeksi. Untuk balita di atas 6 bulan, berikan diet Tinggi Energi Tinggi Protein (TETP) dengan tekstur lunak (Buah, Susu, Telur, Ikan, Kacang-kacangan). \n\n• Catatan Diet: Kurangi karbohidrat untuk meminimalkan produksi CO2. Madu dapat diberikan untuk mengurangi batuk. \n\n• Antibiotik: Harus diberikan sesuai dosis, tepat waktu (misal setiap 8 jam untuk jadwal 3x sehari), dan wajib dihabiskan untuk membunuh bakteri sepenuhnya. \n\nTips Penting: Selalu catat hasil hitung napas dan suhu tubuh si Kecil di buku kecil agar mudah dilaporkan saat berkonsultasi dengan bidan atau dokter. \n\n![Deskripsi Gambar](https://i.ibb.co.com/jktdJnQ4/Picture10.png)',
       mediaUrl: 'https://res.cloudinary.com/dajhxjagk/video/upload/v1773254476/Pemeriksaan_diagnostik_Penatalaksanaan_Deteksi_dini_perawatan_Pencegahan_yutkpv.mp4',
       mediaType: 'video'
@@ -109,6 +113,7 @@ const defaultState: AppState = {
       description: 'Manajemen Psikologis bagi ibu: Hipnosis 5 Jari',
       category: 'Psikologi',
       image: 'https://i.ibb.co.com/svLPSkkZ/Chat-GPT-Image-12-Mar-2026-19-07-11.png',
+      iconImage: 'https://storage.googleapis.com/macaulay-prod-us-central1-user-images/c887103a-3450-4886-981f-f1c5081014a9',
       content: 'Digunakan untuk menurunkan kecemasan pada anak/orang tua dengan menautkan ibu jari ke jari lainnya sambil membayangkan hal positif (tubuh sehat, orang tersayang, kesuksesan, dan tempat yang menyenangkan) \n\n![Deskripsi Gambar](https://i.ibb.co.com/j9pjyn4r/Picture11.png)',
       mediaUrl: 'https://res.cloudinary.com/dajhxjagk/video/upload/v1773254479/Hipnosis_5_jari_wyqvkk.mp4',
       mediaType: 'video'
@@ -219,6 +224,22 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
           batch.set(doc(db, 'sessions', session.id), session);
         });
         await batch.commit();
+      } else {
+        // Force update existing sessions with the new iconImages requested by user
+        let needsUpdate = false;
+        const batch = writeBatch(db);
+        sessionsSnapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          const defaultSession = defaultState.sessions[docSnap.id as keyof typeof defaultState.sessions];
+          // If the document in firestore doesn't have an iconImage, but our default state does, update it
+          if (defaultSession && defaultSession.iconImage && !data.iconImage) {
+            batch.update(docSnap.ref, { iconImage: defaultSession.iconImage });
+            needsUpdate = true;
+          }
+        });
+        if (needsUpdate) {
+          await batch.commit();
+        }
       }
 
       const videosSnapshot = await getDocs(collection(db, 'videos'));
@@ -243,16 +264,21 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
           const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
           if (userDoc.exists() && userDoc.data().role === 'admin') {
             setIsAdmin(true);
+            seedDatabase(); // Ensure migration runs
           } else if (currentUser.email === 'enzaa120@gmail.com') {
             setIsAdmin(true);
             // Bootstrap first admin
             await setDoc(doc(db, 'users', currentUser.uid), { email: currentUser.email, role: 'admin' }, { merge: true });
+            seedDatabase(); // Ensure migration runs
           } else {
             setIsAdmin(false);
           }
         } catch (error) {
           console.error("Error checking admin status:", error);
-          if (currentUser.email === 'enzaa120@gmail.com') setIsAdmin(true);
+          if (currentUser.email === 'enzaa120@gmail.com') {
+            setIsAdmin(true);
+            seedDatabase();
+          }
         }
       } else {
         setIsAdmin(false);
@@ -281,7 +307,13 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
       if (!snapshot.empty) {
         const sessionsData: Record<string, SessionData> = {};
         snapshot.forEach(doc => {
-          sessionsData[doc.id] = doc.data() as SessionData;
+          const data = doc.data() as SessionData;
+          const defaultSession = defaultState.sessions[doc.id as keyof typeof defaultState.sessions];
+          // Fallback to default iconImage if missing in DB
+          if (!data.iconImage && defaultSession?.iconImage) {
+            data.iconImage = defaultSession.iconImage;
+          }
+          sessionsData[doc.id] = data;
         });
         setState(prev => ({ ...prev, sessions: sessionsData }));
       }
