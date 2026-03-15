@@ -98,27 +98,31 @@ export default function DetailSesi() {
                 {data.mediaType === 'image' ? (
                   <img src={data.mediaUrl} alt="Media tambahan" className="w-full h-auto" referrerPolicy="no-referrer" />
                 ) : data.mediaType === 'video' ? (
-                  <div className="aspect-video w-full overflow-hidden">
+                  <div className="w-full overflow-hidden bg-black">
                     {data.mediaUrl.includes('youtube.com') || data.mediaUrl.includes('youtu.be') ? (
-                      <iframe 
-                        className="w-full h-full"
-                        src={data.mediaUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')} 
-                        title="Video Edukasi"
-                        frameBorder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowFullScreen
-                      ></iframe>
+                      <div className="aspect-video w-full">
+                        <iframe 
+                          className="w-full h-full"
+                          src={data.mediaUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')} 
+                          title="Video Edukasi"
+                          frameBorder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowFullScreen
+                        ></iframe>
+                      </div>
                     ) : data.mediaUrl.includes('drive.google.com') ? (
-                      <iframe 
-                        className="w-full h-full"
-                        src={data.mediaUrl.replace(/\/view.*$/, '/preview')} 
-                        title="Video Edukasi (Google Drive)"
-                        frameBorder="0" 
-                        allow="autoplay" 
-                        allowFullScreen
-                      ></iframe>
+                      <div className="aspect-video w-full">
+                        <iframe 
+                          className="w-full h-full"
+                          src={data.mediaUrl.replace(/\/view.*$/, '/preview')} 
+                          title="Video Edukasi (Google Drive)"
+                          frameBorder="0" 
+                          allow="autoplay" 
+                          allowFullScreen
+                        ></iframe>
+                      </div>
                     ) : (
-                      <video controls className="w-full h-full object-contain bg-black">
+                      <video controls className="w-full h-auto block bg-black">
                         <source src={data.mediaUrl} type="video/mp4" />
                         Browser Anda tidak mendukung tag video.
                       </video>
