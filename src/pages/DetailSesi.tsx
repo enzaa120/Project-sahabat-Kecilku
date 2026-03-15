@@ -84,7 +84,7 @@ export default function DetailSesi() {
       <div className="px-6 md:px-20 py-16">
         <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16">
           {/* Main Article */}
-          <article className="flex-1 min-w-0 prose prose-slate prose-lg max-w-[800px] prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-500 prose-img:rounded-2xl prose-img:shadow-md prose-img:w-full prose-img:object-cover ql-snow">
+          <article className="lg:flex-1 w-full min-w-0 prose prose-slate prose-lg max-w-[800px] prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-500 prose-img:rounded-2xl prose-img:shadow-md prose-img:w-full prose-img:object-cover ql-snow">
             
             <div 
               className="text-slate-800 leading-relaxed tracking-wide ql-editor overflow-hidden"
