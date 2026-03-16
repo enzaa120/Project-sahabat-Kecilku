@@ -57,6 +57,11 @@ export default function DetailSesi() {
     displayContent = displayContent.replace(/<img /g, '<img referrerpolicy="no-referrer" ');
     // Also convert any lingering markdown images just in case they typed it in Quill
     displayContent = displayContent.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" referrerpolicy="no-referrer" class="w-full rounded-2xl shadow-md object-cover my-6" />');
+    // Convert iframe with .mp4 to video tag
+    displayContent = displayContent.replace(
+      /<iframe[^>]*src="([^"]+\.mp4)"[^>]*><\/iframe>/gi,
+      '<video controls class="w-full h-auto block bg-black rounded-2xl shadow-md my-6"><source src="$1" type="video/mp4" />Browser Anda tidak mendukung tag video.</video>'
+    );
   }
 
   return (
@@ -86,17 +91,11 @@ export default function DetailSesi() {
           {/* Main Article */}
           <article className="lg:flex-1 w-full min-w-0 prose prose-slate prose-lg max-w-[800px] prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-500 prose-img:rounded-2xl prose-img:shadow-md prose-img:w-full prose-img:object-cover ql-snow">
             
-            <div 
-              className="text-slate-800 leading-relaxed tracking-wide ql-editor overflow-hidden"
-              style={{ padding: 0 }}
-              dangerouslySetInnerHTML={{ __html: displayContent }}
-            />
-
-            {/* Admin Managed Media - Moved to bottom for summary */}
+            {/* Admin Managed Media - Moved to top */}
             {data.mediaType !== 'none' && data.mediaUrl && (
-              <div className="mt-12 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 w-full shadow-sm">
+              <div className="mb-12 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 w-full shadow-sm">
                 {data.mediaType === 'image' ? (
-                  <img src={data.mediaUrl} alt="Media tambahan" className="w-full h-auto" referrerPolicy="no-referrer" />
+                  <img src={data.mediaUrl} alt="Media tambahan" className="w-full h-auto m-0" referrerPolicy="no-referrer" />
                 ) : data.mediaType === 'video' ? (
                   <div className="w-full overflow-hidden bg-black">
                     {data.mediaUrl.includes('youtube.com') || data.mediaUrl.includes('youtu.be') ? (
@@ -131,6 +130,12 @@ export default function DetailSesi() {
                 ) : null}
               </div>
             )}
+
+            <div 
+              className="ql-editor overflow-hidden"
+              style={{ padding: 0 }}
+              dangerouslySetInnerHTML={{ __html: displayContent }}
+            />
 
             <div className="flex items-center gap-4 mt-16 pt-8 border-t border-slate-200">
               <button className="flex items-center gap-2 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium transition-colors">

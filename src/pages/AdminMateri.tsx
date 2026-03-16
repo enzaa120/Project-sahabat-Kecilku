@@ -54,7 +54,7 @@ export default function AdminMateri() {
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'image'],
+      ['link', 'image', 'video'],
       ['clean']
     ],
   };
@@ -64,7 +64,7 @@ export default function AdminMateri() {
     'bold', 'italic', 'underline', 'strike',
     'align',
     'list', 'bullet', 'indent',
-    'link', 'image'
+    'link', 'image', 'video'
   ];
 
   return (
