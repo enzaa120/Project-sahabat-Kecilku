@@ -121,7 +121,7 @@ export default function DetailSesi() {
                         ></iframe>
                       </div>
                     ) : (
-                      <video controls className="w-full h-auto block bg-black">
+                      <video key={data.mediaUrl} controls className="w-full h-auto block bg-black">
                         <source src={data.mediaUrl} type="video/mp4" />
                         Browser Anda tidak mendukung tag video.
                       </video>

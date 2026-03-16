@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
-import { doc, collection, onSnapshot, setDoc, updateDoc, getDoc, getDocs, writeBatch } from 'firebase/firestore';
+import { doc, collection, onSnapshot, setDoc, updateDoc, getDoc, getDocs, writeBatch, deleteDoc } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, User } from 'firebase/auth';
 
 export interface SessionData {
@@ -192,6 +192,7 @@ interface AppContextType {
   updateLanding: (data: Partial<LandingData>) => void;
   updateSession: (id: string, data: Partial<SessionData>) => void;
   updateVideos: (videos: VideoData[]) => void;
+  deleteVideo: (id: string) => void;
   incrementVideoViews: (id: string) => void;
   addMedia: (media: MediaItem) => void;
   removeMedia: (id: string) => void;
@@ -388,6 +389,16 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
     }
   };
 
+  const deleteVideo = async (id: string) => {
+    const isEmergency = localStorage.getItem('sahabat_admin_auth') === 'true';
+    if (!isAdmin && !isEmergency) return;
+    try {
+      await deleteDoc(doc(db, 'videos', id));
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
+
   const incrementVideoViews = async (id: string) => {
     const video = state.videos.find(v => v.id === id);
     if (video) {
@@ -517,6 +528,7 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
       updateLanding, 
       updateSession,
       updateVideos,
+      deleteVideo,
       incrementVideoViews,
       addMedia,
       removeMedia,

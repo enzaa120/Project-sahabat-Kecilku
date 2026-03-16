@@ -3,10 +3,12 @@ import { Video, Plus, Edit3, Trash2, Save, X } from 'lucide-react';
 import { useAppContext, VideoData } from '../context/AppContext';
 
 export default function AdminVideo() {
-  const { state, updateVideos } = useAppContext();
+  const { state, updateVideos, deleteVideo } = useAppContext();
   const [videos, setVideos] = useState<VideoData[]>(state.videos);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<VideoData | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     setVideos(state.videos);
@@ -33,11 +35,20 @@ export default function AdminVideo() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('Apakah Anda yakin ingin menghapus video ini?')) {
-      const newVideos = videos.filter(v => v.id !== id);
+    setDeletingId(id);
+  };
+
+  const confirmDelete = () => {
+    if (deletingId) {
+      const newVideos = videos.filter(v => v.id !== deletingId);
       setVideos(newVideos);
-      updateVideos(newVideos);
+      deleteVideo(deletingId);
+      setDeletingId(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setDeletingId(null);
   };
 
   const handleSave = () => {
@@ -52,7 +63,8 @@ export default function AdminVideo() {
       updateVideos(newVideos);
       setEditingId(null);
       setFormData(null);
-      alert('Video berhasil disimpan!');
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
     }
   };
 
@@ -63,13 +75,43 @@ export default function AdminVideo() {
           <h1 className="text-2xl font-bold text-slate-900">Kelola Video Edukasi</h1>
           <p className="text-slate-500 text-sm mt-1">Tambah, edit, atau hapus video animasi edukasi.</p>
         </div>
-        <button 
-          onClick={handleAddNew}
-          className="bg-blue-500 text-white font-bold py-2.5 px-5 rounded-xl hover:bg-blue-600 transition-colors flex items-center gap-2"
-        >
-          <Plus size={20} /> Tambah Video
-        </button>
+        <div className="flex items-center gap-4">
+          {showSuccess && (
+            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium animate-in fade-in">
+              Video berhasil disimpan!
+            </div>
+          )}
+          <button 
+            onClick={handleAddNew}
+            className="bg-blue-500 text-white font-bold py-2.5 px-5 rounded-xl hover:bg-blue-600 transition-colors flex items-center gap-2"
+          >
+            <Plus size={20} /> Tambah Video
+          </button>
+        </div>
       </div>
+
+      {deletingId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">Hapus Video</h3>
+            <p className="text-slate-600 mb-6">Apakah Anda yakin ingin menghapus video ini? Tindakan ini tidak dapat dibatalkan.</p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={cancelDelete}
+                className="px-4 py-2 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                Batal
+              </button>
+              <button 
+                onClick={confirmDelete}
+                className="px-4 py-2 rounded-xl font-medium bg-red-500 text-white hover:bg-red-600 transition-colors"
+              >
+                Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {editingId && formData ? (
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4">

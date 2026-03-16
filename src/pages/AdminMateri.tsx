@@ -11,6 +11,7 @@ export default function AdminMateri() {
 
   const [landingForm, setLandingForm] = useState(state.landing);
   const [sessionForm, setSessionForm] = useState<any>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     setLandingForm(state.landing);
@@ -24,7 +25,8 @@ export default function AdminMateri() {
 
   const handleSaveLanding = () => {
     updateLanding(landingForm);
-    alert('Halaman Awal berhasil diperbarui!');
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
   };
 
   const handleEditSession = (id: string) => {
@@ -42,7 +44,8 @@ export default function AdminMateri() {
         }
       });
       updateSession(editingSessionId, cleanedData);
-      alert('Sesi berhasil diperbarui!');
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
       setEditingSessionId(null);
     }
   };
@@ -74,6 +77,11 @@ export default function AdminMateri() {
           <h1 className="text-2xl font-bold text-slate-900">Kelola Materi</h1>
           <p className="text-slate-500 text-sm mt-1">Edit halaman awal dan konten sesi edukasi.</p>
         </div>
+        {showSuccess && (
+          <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium animate-in fade-in">
+            Berhasil disimpan!
+          </div>
+        )}
       </div>
 
       {/* Tabs */}
