@@ -1,20 +1,37 @@
 @import "tailwindcss";
 
 @layer utilities {
-  .ql-align-center {
+  .ql-editor .ql-align-center {
     text-align: center !important;
   }
-  .ql-align-right {
+  .ql-editor .ql-align-right {
     text-align: right !important;
   }
-  .ql-align-justify {
+  .ql-editor .ql-align-justify {
     text-align: justify !important;
   }
+  .ql-editor .ql-indent-1 { padding-left: 3em !important; }
+  .ql-editor .ql-indent-2 { padding-left: 6em !important; }
+  .ql-editor .ql-indent-3 { padding-left: 9em !important; }
+  .ql-editor .ql-indent-4 { padding-left: 12em !important; }
+  .ql-editor .ql-indent-5 { padding-left: 15em !important; }
+  .ql-editor .ql-indent-6 { padding-left: 18em !important; }
+  .ql-editor .ql-indent-7 { padding-left: 21em !important; }
+  .ql-editor .ql-indent-8 { padding-left: 24em !important; }
+  
   .ql-editor {
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif !important;
     font-size: 1.05rem !important;
     line-height: 1.8 !important;
     color: #475569 !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    hyphens: none !important;
+  }
+  .ql-editor p, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor li {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    hyphens: none !important;
   }
   .ql-editor p {
     margin-bottom: 1.5em !important;
